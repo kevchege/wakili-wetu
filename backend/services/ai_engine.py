@@ -11,15 +11,14 @@ AI_PROVIDER = os.environ.get("AI_PROVIDER", "gemini").lower()
 # read credentials -- only one needs to be present depending on provider
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
-# for a self‑hosted model you can point at any HTTP URL that accepts a prompt
-LOCAL_MODEL_URL = os.environ.get("LOCAL_MODEL_URL")
 
+# note: the "local" provider now uses our offline legal engine; no external
+# URL or key is required.  (We used to support an HTTP endpoint, which is
+# commented out above.)
 if AI_PROVIDER == "gemini" and not GEMINI_API_KEY:
     raise RuntimeError("GEMINI_API_KEY environment variable not set for Gemini provider.")
 if AI_PROVIDER == "openai" and not OPENAI_API_KEY:
     raise RuntimeError("OPENAI_API_KEY environment variable not set for OpenAI provider.")
-if AI_PROVIDER == "local" and not LOCAL_MODEL_URL:
-    raise RuntimeError("LOCAL_MODEL_URL environment variable not set for local provider.")
 
 # cache the selected model name so we only fetch once
 _cached_model_name = None
