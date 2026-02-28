@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from services.legal_fetcher import get_relevant_material
-from services.ai_engine import analyze_with_gemini
+from services.ai_engine import analyze
 from models import CaseAnalysis
 from database.db import db
 
@@ -18,9 +18,13 @@ def analyze_case():
     if not material:
         return jsonify({"error": "No matching legal material found"}), 404
 
-    result = analyze_with_gemini(material, query)
+    result = analyze(material, query)
 
-    case = CaseAnalysis(query=query, summary=result, citations="")
+    # result is a dict with 'text' and 'cites'
+    summary_text = result.get("text") if isinstance(result, dict) else str(result)
+    cites = result.get("cites", []) if isinstance(result, dict) else []
+
+    case = CaseAnalysis(query=query, summary=summary_text, citations=",".join(cites))
     db.session.add(case)
     db.session.commit()
 
