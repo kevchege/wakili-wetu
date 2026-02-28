@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wakili Wetu — AI Legal Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* ═══════════════════════════════════════════════
+   WAKILI WETU — DESIGN SYSTEM
+═══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --void:#080b0f;
+  --deep:#0e1318;
+  --surface:#141a21;
+  --raised:#1b232d;
+  --lift:#222c38;
+  --border:#252f3d;
+  --muted:#2e3b4d;
+  --dim:#3d4e63;
+  --text-ghost:#4a5e75;
+  --text-dim:#647d96;
+  --text-mid:#8fa5bc;
+  --text:#bdd0e3;
+  --bright:#ddeaf7;
+  --white:#f0f5fa;
+
+  --gold:#c8a84b;
+  --gold-bright:#dbbf6a;
+  --gold-dim:#8a6d2e;
+  --gold-faint:rgba(200,168,75,0.08);
+
+  --emerald:#28a876;
+  --emerald-dim:#1a6d4d;
+  --emerald-faint:rgba(40,168,118,0.08);
+
+  --crimson:#c84b4b;
+  --sapphire:#4b82c8;
+  --amber:#c87c28;
+
+  --r4:4px;--r6:6px;--r8:8px;--r12:12px;--r20:20px;
+  --t:200ms cubic-bezier(.4,0,.2,1);
+  --t-slow:400ms cubic-bezier(.4,0,.2,1);
+  --shadow-sm:0 1px 4px rgba(0,0,0,.5);
+  --shadow-md:0 4px 20px rgba(0,0,0,.55);
+  --shadow-lg:0 12px 48px rgba(0,0,0,.65);
+  --shadow-gold:0 4px 24px rgba(200,168,75,.18);
+}
+
+html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--void);color:var(--text);overflow:hidden}
+::selection{background:rgba(200,168,75,.2);color:var(--white)}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--deep)}
+::-webkit-scrollbar-thumb{background:var(--muted);border-radius:3px}
+
+/* ── Keyframes ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes shimmer{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes scanline{from{transform:translateY(-100vh)}to{transform:translateY(100vh)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(200,168,75,0)}50%{box-shadow:0 0 0 5px rgba(200,168,75,.12)}}
+@keyframes slideRight{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+@keyframes typingBlink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes ripple{from{transform:scale(0);opacity:.5}to{transform:scale(4);opacity:0}}
+@keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+.fade-up{animation:fadeUp .5s both}
+.fade-up-1{animation:fadeUp .5s .08s both}
+.fade-up-2{animation:fadeUp .5s .16s both}
+.fade-up-3{animation:fadeUp .5s .24s both}
+.fade-up-4{animation:fadeUp .5s .32s both}
+.fade-up-5{animation:fadeUp .5s .40s both}
+
+/* ══════════════════════════════════════════════
+   AUTH SCREEN
+══════════════════════════════════════════════ */
+#auth-screen{
+  position:fixed;inset:0;display:flex;z-index:100;
+  background:var(--void);
+}
+#auth-screen.hidden{display:none}
+
+.auth-bg{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(200,168,75,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,168,75,.025) 1px,transparent 1px);
+  background-size:72px 72px;
+}
+.auth-scanline{
+  position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent 0%,rgba(200,168,75,.12) 50%,transparent 100%);
+  animation:scanline 8s linear infinite;pointer-events:none;z-index:1;
+}
+.auth-glow{
+  position:absolute;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,168,75,.05) 0%,transparent 70%);
+  top:-200px;right:30%;pointer-events:none;
+}
+
+.auth-left{
+  width:52%;display:flex;flex-direction:column;justify-content:center;
+  padding:64px 80px;position:relative;z-index:2;
+}
+.auth-right{
+  width:48%;background:var(--deep);
+  border-left:1px solid var(--border);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:48px 60px;position:relative;z-index:2;overflow-y:auto;
+}
+.auth-right::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(200,168,75,.04) 0%,transparent 55%);
+  pointer-events:none;
+}
+
+.auth-wordmark{
+  font-family:'Cormorant Garamond',serif;
+  font-size:58px;font-weight:300;color:var(--white);
+  line-height:.95;letter-spacing:-.02em;
+}
+.auth-wordmark em{font-style:italic;color:var(--gold)}
+.auth-sub{
+  font-size:14px;color:var(--text-dim);margin-top:20px;
+  line-height:1.75;max-width:400px;
+}
+.auth-features{margin-top:52px;display:flex;flex-direction:column;gap:20px}
+.auth-feat{display:flex;align-items:flex-start;gap:16px}
+.auth-feat-icon{
+  width:40px;height:40px;min-width:40px;
+  border:1px solid var(--border);border-radius:var(--r8);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;background:var(--raised);
+}
+.auth-feat-text h4{font-size:13px;font-weight:600;color:var(--bright)}
+.auth-feat-text p{font-size:12px;color:var(--text-ghost);margin-top:3px;line-height:1.6}
+
+/* Auth Form */
+.auth-eyebrow{
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold-dim);margin-bottom:10px;display:flex;align-items:center;gap:6px;
+}
+.auth-eyebrow::before{content:'';width:20px;height:1px;background:var(--gold-dim)}
+.auth-form-title{
+  font-family:'Cormorant Garamond',serif;font-size:30px;
+  font-weight:600;color:var(--white);margin-bottom:5px;
+}
+.auth-form-sub{font-size:12.5px;color:var(--text-dim);margin-bottom:28px}
+
+/* Role pills */
+.role-grid{display:flex;gap:8px;margin-bottom:24px}
+.role-pill{
+  flex:1;padding:12px 8px;border-radius:var(--r8);
+  border:1px solid var(--border);background:var(--surface);
+  cursor:pointer;text-align:center;transition:all var(--t);
+  color:var(--text-dim);user-select:none;
+}
+.role-pill:hover{border-color:var(--muted);background:var(--raised)}
+.role-pill.active{
+  border-color:var(--gold-dim);background:var(--gold-faint);
+  color:var(--gold);
+}
+.role-pill .ricon{font-size:22px;display:block;margin-bottom:5px}
+.role-pill .rlabel{font-size:10.5px;font-weight:500;display:block}
+
+/* Form inputs */
+.fg{margin-bottom:16px}
+label.fl{
+  display:block;font-size:10.5px;font-weight:600;
+  color:var(--text-dim);margin-bottom:6px;
+  letter-spacing:.06em;text-transform:uppercase;
+}
+input.fi,select.fi,textarea.fi{
+  width:100%;padding:10px 14px;border-radius:var(--r6);
+  border:1px solid var(--border);background:var(--surface);
+  color:var(--bright);font-size:13.5px;font-family:'DM Sans',sans-serif;
+  transition:all var(--t);outline:none;
+}
+input.fi:focus,select.fi:focus,textarea.fi:focus{
+  border-color:var(--gold-dim);background:var(--raised);
+  box-shadow:0 0 0 3px rgba(200,168,75,.1);
+}
+input.fi::placeholder{color:var(--text-ghost)}
+select.fi{cursor:pointer}
+select.fi option{background:var(--surface)}
+
+.btn-gold{
+  width:100%;padding:12px;border-radius:var(--r6);
+  background:var(--gold);border:none;cursor:pointer;
+  font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;
+  color:var(--void);transition:all var(--t);letter-spacing:.02em;
+  position:relative;overflow:hidden;
+}
+.btn-gold:hover{background:var(--gold-bright);transform:translateY(-1px);box-shadow:var(--shadow-gold)}
+.btn-gold:active{transform:translateY(0)}
+.btn-outline{
+  padding:9px 18px;border-radius:var(--r6);
+  background:transparent;border:1px solid var(--border);
+  cursor:pointer;font-size:13px;color:var(--text-mid);
+  font-family:'DM Sans',sans-serif;transition:all var(--t);
+}
+.btn-outline:hover{border-color:var(--muted);color:var(--text);background:var(--raised)}
+
+.auth-switch{text-align:center;margin-top:20px;font-size:12.5px;color:var(--text-ghost)}
+.auth-switch a{color:var(--gold);cursor:pointer;text-decoration:none}
+.auth-switch a:hover{color:var(--gold-bright)}
+
+/* Steps */
+.steps{display:flex;margin-bottom:28px;position:relative}
+.steps::before{
+  content:'';position:absolute;top:13px;left:14px;right:14px;
+  height:1px;background:var(--border);z-index:0;
+}
+.step-it{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;z-index:1}
+.step-dot{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;margin-bottom:7px;
+  background:var(--void);
+}
+.step-dot.done{background:var(--gold);color:var(--void)}
+.step-dot.active{background:rgba(200,168,75,.15);border:2px solid var(--gold);color:var(--gold)}
+.step-dot.pending{background:var(--surface);border:1px solid var(--border);color:var(--text-ghost)}
+.step-lbl{font-size:10px;color:var(--text-ghost)}
+.step-lbl.active{color:var(--gold)}
+
+/* ══════════════════════════════════════════════
+   APP SHELL
+══════════════════════════════════════════════ */
+#app-shell{position:fixed;inset:0;display:flex}
+#app-shell.hidden{display:none}
+
+/* Sidebar */
+#sidebar{
+  width:256px;min-width:256px;
+  background:var(--deep);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  transition:width var(--t-slow),min-width var(--t-slow);
+  overflow:hidden;position:relative;z-index:10;
+}
+#sidebar.collapsed{width:60px;min-width:60px}
+#sidebar::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:200px;
+  background:linear-gradient(180deg,rgba(200,168,75,.04) 0%,transparent 100%);
+  pointer-events:none;
+}
+
+.sb-logo{
+  padding:18px 14px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:11px;cursor:pointer;
+  transition:background var(--t);
+}
+.sb-logo:hover{background:var(--raised)}
+.logo-seal{
+  width:34px;height:34px;min-width:34px;border-radius:50%;
+  border:1.5px solid var(--gold-dim);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;
+  background:radial-gradient(circle,rgba(200,168,75,.12),transparent);
+  position:relative;z-index:1;
+}
+.logo-seal::after{
+  content:'';position:absolute;inset:3px;border-radius:50%;
+  border:1px dashed rgba(200,168,75,.25);
+}
+.logo-words{overflow:hidden;white-space:nowrap;transition:opacity var(--t-slow),width var(--t-slow)}
+.logo-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--bright)}
+.logo-sub{font-size:9.5px;color:var(--text-ghost);letter-spacing:.12em;text-transform:uppercase}
+
+#sidebar.collapsed .logo-words{opacity:0;width:0;overflow:hidden}
+#sidebar.collapsed .nav-label,
+#sidebar.collapsed .nav-badge,
+#sidebar.collapsed .sb-section-label,
+#sidebar.collapsed .user-name,
+#sidebar.collapsed .user-role,
+#sidebar.collapsed .signout-btn{opacity:0;width:0;overflow:hidden;white-space:nowrap}
+
+.sb-nav{flex:1;padding:10px 8px;overflow-y:auto}
+.sb-section-label{
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text-ghost);padding:12px 8px 4px;
+  white-space:nowrap;transition:opacity var(--t-slow);
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 11px;border-radius:var(--r6);
+  cursor:pointer;color:var(--text-mid);
+  transition:all var(--t);position:relative;
+  margin-bottom:1px;
+}
+.nav-item:hover{background:var(--raised);color:var(--text)}
+.nav-item.active{background:rgba(200,168,75,.1);color:var(--gold-bright)}
+.nav-item.active::before{
+  content:'';position:absolute;left:0;top:22%;bottom:22%;
+  width:2.5px;background:var(--gold);border-radius:0 2px 2px 0;
+}
+.nav-icon{font-size:15px;min-width:20px;text-align:center;flex-shrink:0}
+.nav-label{font-size:13px;font-weight:400;white-space:nowrap;transition:opacity var(--t-slow)}
+.nav-badge{
+  margin-left:auto;background:var(--crimson);color:#fff;
+  font-size:9px;padding:1px 5px;border-radius:10px;font-weight:700;
+  white-space:nowrap;transition:opacity var(--t-slow);
+}
+
+.sb-footer{padding:10px 8px;border-top:1px solid var(--border)}
+.user-chip{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 11px;border-radius:var(--r6);
+  cursor:pointer;transition:background var(--t);
+}
+.user-chip:hover{background:var(--raised)}
+.user-av{
+  width:30px;height:30px;min-width:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;flex-shrink:0;
+}
+.user-name{font-size:12px;font-weight:500;color:var(--bright);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity var(--t-slow)}
+.user-role{font-size:10px;color:var(--text-ghost);white-space:nowrap;transition:opacity var(--t-slow)}
+.signout-btn{
+  font-size:10.5px;color:var(--text-ghost);cursor:pointer;
+  padding:4px 11px;transition:color var(--t),opacity var(--t-slow);
+  white-space:nowrap;
+}
+.signout-btn:hover{color:var(--crimson)}
+
+/* Main */
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--surface)}
+
+.topbar{
+  height:54px;min-height:54px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;
+  padding:0 24px;background:var(--deep);
+}
+.topbar-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;color:var(--bright);font-weight:600;
+}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.role-chip{
+  font-size:10.5px;color:var(--text-dim);
+  font-family:'DM Mono',monospace;
+  padding:4px 10px;border:1px solid var(--border);
+  border-radius:var(--r4);
+}
+.icon-btn{
+  width:34px;height:34px;border-radius:var(--r6);
+  background:transparent;border:1px solid var(--border);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:var(--text-mid);transition:all var(--t);
+  position:relative;
+}
+.icon-btn:hover{background:var(--raised);border-color:var(--muted);color:var(--text)}
+.notif-dot{
+  position:absolute;top:7px;right:7px;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--crimson);border:1px solid var(--deep);
+}
+
+/* Pages */
+.page{display:none;flex:1;overflow-y:auto;animation:fadeIn .3s both}
+.page.active{display:flex;flex-direction:column}
+
+/* ══════════════════════════════════════════════
+   REUSABLE COMPONENTS
+══════════════════════════════════════════════ */
+.pg{padding:26px 30px}
+
+.section-head{margin-bottom:22px}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--bright)}
+.section-sub{font-size:12px;color:var(--text-ghost);margin-top:3px}
+
+/* Stats grid */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px}
+.stat-card{
+  background:var(--raised);border:1px solid var(--border);
+  border-radius:var(--r8);padding:18px 16px;
+  position:relative;overflow:hidden;transition:all var(--t);
+  cursor:default;
+}
+.stat-card:hover{border-color:var(--muted);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.stat-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.stat-card.c-gold::after{background:linear-gradient(90deg,var(--gold),transparent)}
+.stat-card.c-emerald::after{background:linear-gradient(90deg,var(--emerald),transparent)}
+.stat-card.c-sapphire::after{background:linear-gradient(90deg,var(--sapphire),transparent)}
+.stat-card.c-crimson::after{background:linear-gradient(90deg,var(--crimson),transparent)}
+.stat-ic{font-size:20px;margin-bottom:12px;display:block}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;color:var(--bright);line-height:1}
+.stat-lbl{font-size:11px;color:var(--text-ghost);margin-top:4px;letter-spacing:.03em}
+.stat-ch{font-size:10.5px;margin-top:7px}
+.stat-ch.up{color:var(--emerald)}.stat-ch.dn{color:var(--crimson)}.stat-ch.neu{color:var(--text-ghost)}
+
+/* Card */
+.card{background:var(--raised);border:1px solid var(--border);border-radius:var(--r8);overflow:hidden}
+.card-head{
+  padding:14px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.card-title{font-size:13px;font-weight:600;color:var(--bright)}
+.card-sub{font-size:10.5px;color:var(--text-ghost);margin-top:1px}
+.card-body{padding:18px}
+
+/* Grid helpers */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.wn{display:grid;grid-template-columns:1.65fr 1fr;gap:18px}
+.mt14{margin-top:14px}.mt18{margin-top:18px}.mt22{margin-top:22px}
+
+/* Tags */
+.tag{font-size:10px;padding:2px 8px;border-radius:11px;border:1px solid transparent;display:inline-block}
+.tag-const{border-color:rgba(200,168,75,.35);color:var(--gold-dim);background:rgba(200,168,75,.07)}
+.tag-crim{border-color:rgba(200,75,75,.35);color:#c98080;background:rgba(200,75,75,.07)}
+.tag-civil{border-color:rgba(75,130,200,.35);color:#80a0c9;background:rgba(75,130,200,.07)}
+.tag-prop{border-color:rgba(40,168,118,.35);color:#70c9a2;background:rgba(40,168,118,.07)}
+.tag-pol{border-color:rgba(40,168,118,.35);color:#70c9a2;background:rgba(40,168,118,.07)}
+.tag-open{border-color:rgba(40,168,118,.35);color:var(--emerald);background:rgba(40,168,118,.09)}
+.tag-closed{border-color:var(--border);color:var(--text-ghost)}
+.tag-pend{border-color:rgba(200,168,75,.35);color:var(--gold-dim);background:rgba(200,168,75,.07)}
+
+/* Search */
+.search-wrap{
+  display:flex;align-items:center;gap:10px;
+  background:var(--raised);border:1px solid var(--border);
+  border-radius:var(--r6);padding:9px 14px;
+  transition:all var(--t);margin-bottom:16px;
+}
+.search-wrap:focus-within{border-color:var(--gold-dim);box-shadow:0 0 0 3px rgba(200,168,75,.09)}
+.search-wrap span{color:var(--text-ghost);font-size:14px}
+.search-input{
+  flex:1;background:none;border:none;outline:none;
+  color:var(--bright);font-size:13.5px;font-family:'DM Sans',sans-serif;
+}
+.search-input::placeholder{color:var(--text-ghost)}
+
+/* Filter chips */
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
+.fchip{
+  padding:4px 13px;border-radius:16px;border:1px solid var(--border);
+  font-size:11.5px;color:var(--text-mid);cursor:pointer;
+  transition:all var(--t);background:transparent;font-family:'DM Sans',sans-serif;
+}
+.fchip:hover{border-color:var(--muted);color:var(--text)}
+.fchip.active{border-color:var(--gold-dim);background:var(--gold-faint);color:var(--gold)}
+
+/* Case list */
+.case-list{display:flex;flex-direction:column;gap:10px}
+.case-item{
+  background:var(--raised);border:1px solid var(--border);
+  border-radius:var(--r8);padding:14px 16px;
+  cursor:pointer;transition:all var(--t);
+}
+.case-item:hover{border-color:var(--muted);transform:translateX(3px);box-shadow:var(--shadow-sm)}
+.case-item.sel{border-color:var(--gold-dim);background:rgba(200,168,75,.06)}
+.case-num{
+  font-family:'DM Mono',monospace;font-size:9.5px;color:var(--gold-dim);
+  background:rgba(200,168,75,.09);padding:2px 7px;border-radius:3px;
+}
+.case-title-t{font-size:13px;font-weight:500;color:var(--bright);margin:6px 0 3px;line-height:1.35}
+.case-meta{font-size:11px;color:var(--text-ghost)}
+.case-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.flex-bet{display:flex;align-items:center;justify-content:space-between}
+.flex-row{display:flex;align-items:center;gap:8px}
+
+/* ══════════════════════════════════════════════
+   DETAIL PANEL
+══════════════════════════════════════════════ */
+.detail-panel{
+  background:var(--raised);border:1px solid var(--border);
+  border-radius:var(--r8);
+  height:100%;overflow-y:auto;
+  display:flex;flex-direction:column;
+}
+.detail-panel.empty{align-items:center;justify-content:center;color:var(--text-ghost);font-size:13px}
+.detail-empty-ico{font-size:36px;margin-bottom:12px}
+
+.detail-hero{
+  padding:20px;border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,rgba(200,168,75,.06),transparent);
+}
+.detail-id{font-family:'DM Mono',monospace;font-size:10px;color:var(--gold-dim);margin-bottom:7px}
+.detail-title-h{
+  font-family:'Cormorant Garamond',serif;font-size:20px;
+  font-weight:600;color:var(--bright);line-height:1.35;margin-bottom:10px;
+}
+.detail-meta{display:flex;gap:18px;flex-wrap:wrap}
+.dmeta{font-size:11.5px;color:var(--text-ghost)}
+.dmeta strong{color:var(--text-mid);font-weight:500}
+
+.dtabs{display:flex;background:var(--deep);border-bottom:1px solid var(--border)}
+.dtab{
+  padding:11px 18px;font-size:12px;cursor:pointer;
+  color:var(--text-ghost);border-bottom:2px solid transparent;
+  transition:all var(--t);white-space:nowrap;
+}
+.dtab:hover{color:var(--text)}
+.dtab.active{color:var(--gold);border-bottom-color:var(--gold)}
+
+.dcontent{padding:18px;flex:1}
+
+/* AI insight box */
+.ai-box{
+  padding:14px;border-radius:var(--r8);
+  background:linear-gradient(135deg,rgba(200,168,75,.07),rgba(40,168,118,.04));
+  border:1px solid rgba(200,168,75,.22);margin-bottom:14px;
+}
+.ai-box-hd{
+  display:flex;align-items:center;gap:7px;
+  font-size:10px;font-weight:700;color:var(--gold-dim);
+  letter-spacing:.09em;text-transform:uppercase;margin-bottom:8px;
+}
+.ai-box-hd::before{content:'⚡';font-size:11px}
+.ai-box-txt{font-size:13px;color:var(--text);line-height:1.75}
+
+/* Precedent */
+.prec-item{
+  padding:13px 14px;border-radius:var(--r6);
+  border:1px solid var(--border);background:var(--surface);
+  margin-bottom:9px;cursor:pointer;transition:all var(--t);
+}
+.prec-item:hover{border-color:var(--muted);transform:translateX(2px)}
+.prec-title{font-size:13px;font-weight:500;color:var(--bright);margin-bottom:3px}
+.prec-cite{font-family:'DM Mono',monospace;font-size:10px;color:var(--gold-dim);margin-bottom:5px}
+.prec-sum{font-size:11.5px;color:var(--text-dim);line-height:1.55}
+.sim-bar{height:3px;background:var(--border);border-radius:2px;margin-top:9px}
+.sim-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--gold-dim),var(--gold))}
+
+/* Timeline */
+.timeline{position:relative;padding-left:22px}
+.timeline::before{content:'';position:absolute;left:6px;top:0;bottom:0;width:1px;background:var(--border)}
+.tl-item{position:relative;padding-bottom:18px}
+.tl-dot{position:absolute;left:-19px;top:3px;width:9px;height:9px;border-radius:50%;border:1.5px solid var(--gold-dim);background:var(--void)}
+.tl-date{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-ghost);margin-bottom:3px}
+.tl-ev{font-size:12.5px;color:var(--text)}
+
+/* Impact cards */
+.impact-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px}
+.impact-card{padding:14px;border-radius:var(--r6);border:1px solid}
+.impact-card.pos{border-color:rgba(40,168,118,.3);background:rgba(40,168,118,.06)}
+.impact-card.neg{border-color:rgba(200,75,75,.3);background:rgba(200,75,75,.06)}
+.impact-lbl{font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:9px}
+.impact-card.pos .impact-lbl{color:var(--emerald)}
+.impact-card.neg .impact-lbl{color:var(--crimson)}
+.impact-it{display:flex;align-items:flex-start;gap:7px;font-size:12px;color:var(--text);margin-bottom:6px;line-height:1.5}
+
+/* ══════════════════════════════════════════════
+   RESEARCH / AI CHAT
+══════════════════════════════════════════════ */
+.research-pg{display:flex;flex-direction:column;flex:1;overflow:hidden}
+.ai-status{
+  padding:12px 22px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;background:var(--deep);
+}
+.ai-dot{width:8px;height:8px;border-radius:50%;background:var(--emerald);animation:shimmer 2s infinite}
+.ai-status-txt{font-size:12px;color:var(--text-mid)}
+
+.chat-area{flex:1;overflow-y:auto;padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+.chat-msg{display:flex;gap:10px;max-width:88%}
+.chat-msg.usr{flex-direction:row-reverse;align-self:flex-end}
+.msg-av{width:28px;height:28px;min-width:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:2px}
+.msg-av.ai-av{background:rgba(200,168,75,.14);border:1px solid var(--gold-dim)}
+.msg-av.usr-av{background:rgba(75,130,200,.14);border:1px solid rgba(75,130,200,.35);color:#80a0c9;font-size:10px}
+.bubble{padding:11px 15px;border-radius:var(--r8);font-size:13px;line-height:1.75}
+.bubble.ai-b{background:var(--raised);border:1px solid var(--border);color:var(--text);border-radius:2px 8px 8px 8px}
+.bubble.usr-b{background:rgba(200,168,75,.11);border:1px solid var(--gold-dim);color:var(--bright);border-radius:8px 2px 8px 8px}
+.cite-card{
+  margin-top:9px;padding:9px 12px;
+  background:var(--surface);border:1px solid var(--border);
+  border-left:2.5px solid var(--gold-dim);
+  border-radius:0 var(--r4) var(--r4) 0;font-size:11px;
+}
+.cite-ref{font-family:'DM Mono',monospace;color:var(--gold-dim);font-size:10px}
+.cite-court{color:var(--text-ghost);font-size:10px;margin-top:2px}
+.typing{display:flex;gap:4px;padding:4px 0}
+.t-dot{width:6px;height:6px;border-radius:50%;background:var(--text-ghost);animation:shimmer 1.2s infinite}
+.t-dot:nth-child(2){animation-delay:.18s}.t-dot:nth-child(3){animation-delay:.36s}
+
+.chat-input-area{
+  padding:14px 22px;border-top:1px solid var(--border);
+  background:var(--deep);
+}
+.suggest-pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.spill{
+  padding:4px 12px;border-radius:14px;border:1px solid var(--border);
+  font-size:11px;color:var(--text-ghost);cursor:pointer;
+  transition:all var(--t);background:transparent;font-family:'DM Sans',sans-serif;
+}
+.spill:hover{border-color:var(--gold-dim);color:var(--gold)}
+.chat-row{display:flex;gap:9px;align-items:flex-end}
+.chat-ta{
+  flex:1;padding:10px 14px;border-radius:var(--r6);
+  border:1px solid var(--border);background:var(--surface);
+  color:var(--bright);font-size:13.5px;font-family:'DM Sans',sans-serif;
+  resize:none;min-height:42px;max-height:110px;outline:none;
+  transition:all var(--t);
+}
+.chat-ta:focus{border-color:var(--gold-dim);background:var(--raised)}
+.chat-ta::placeholder{color:var(--text-ghost)}
+.send-btn{
+  width:42px;height:42px;border-radius:var(--r6);
+  background:var(--gold);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;transition:all var(--t);flex-shrink:0;color:var(--void);
+}
+.send-btn:hover{background:var(--gold-bright);transform:scale(1.06)}
+
+/* ══════════════════════════════════════════════
+   DASHBOARD
+══════════════════════════════════════════════ */
+.activity-row{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:9px 0;border-bottom:1px solid var(--border);
+  animation:slideRight .35s both;
+}
+.activity-row:last-child{border-bottom:none}
+.act-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);margin-top:6px;flex-shrink:0}
+.act-txt{font-size:12.5px;color:var(--text)}
+
+.quick-q{
+  padding:9px 12px;border-radius:var(--r6);
+  border:1px solid var(--border);margin-bottom:7px;
+  cursor:pointer;font-size:12.5px;color:var(--text-mid);
+  transition:all var(--t);display:flex;align-items:center;gap:8px;
+}
+.quick-q:hover{border-color:var(--gold-dim);color:var(--text);background:var(--gold-faint)}
+.quick-q:last-child{margin-bottom:0}
+
+.source-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 0;border-bottom:1px solid var(--border);
+}
+.source-row:last-child{border-bottom:none}
+.src-name{font-size:12.5px;color:var(--text)}
+.src-cnt{font-size:10.5px;color:var(--text-ghost);margin-top:2px}
+.src-ok{color:var(--emerald);font-size:12px;font-weight:700}
+
+/* ══════════════════════════════════════════════
+   PROFILE
+══════════════════════════════════════════════ */
+.profile-banner{
+  height:110px;border-radius:var(--r8) var(--r8) 0 0;
+  background:linear-gradient(135deg,rgba(200,168,75,.14),rgba(40,168,118,.07));
+  border:1px solid var(--border);border-bottom:none;position:relative;
+}
+.p-av-lg{
+  width:70px;height:70px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;font-weight:700;
+  border:3px solid var(--void);
+  position:absolute;bottom:-35px;left:22px;
+}
+.profile-body{
+  background:var(--raised);border:1px solid var(--border);border-top:none;
+  border-radius:0 0 var(--r8) var(--r8);
+  padding:42px 22px 22px;
+}
+.p-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--bright)}
+.role-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:3px 12px;border-radius:16px;font-size:10.5px;font-weight:600;
+  margin-top:6px;letter-spacing:.04em;
+}
+.p-divider{height:1px;background:var(--border);margin:18px 0}
+.p-field-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--text-ghost);margin-bottom:3px}
+.p-field-val{font-size:13px;color:var(--text)}
+
+.profile-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-top:20px}
+.ptab{
+  padding:9px 16px 9px 0;font-size:13px;cursor:pointer;
+  color:var(--text-ghost);border-bottom:2px solid transparent;
+  transition:all var(--t);
+}
+.ptab:hover{color:var(--text)}
+.ptab.active{color:var(--gold);border-bottom-color:var(--gold)}
+
+.plan-feat{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text);margin-bottom:8px}
+.plan-feat::before{content:'✓';color:var(--emerald);font-weight:700}
+
+/* OTP input row */
+.otp-row{display:flex;gap:8px;justify-content:center;margin-bottom:22px}
+.otp-cell{
+  width:42px;height:50px;text-align:center;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r6);color:var(--bright);
+  font-size:22px;font-family:'DM Mono',monospace;outline:none;
+}
+.otp-cell:focus{border-color:var(--gold-dim);background:var(--raised)}
+
+/* Toast */
+#toast{
+  position:fixed;bottom:28px;right:28px;z-index:999;
+  background:var(--raised);border:1px solid var(--emerald-dim);
+  color:var(--bright);padding:12px 20px;border-radius:var(--r8);
+  font-size:13px;box-shadow:var(--shadow-lg);
+  animation:fadeUp .4s both;display:none;
+}
+#toast.show{display:block}
+
+/* Divider */
+.divider{height:1px;background:var(--border);margin:16px 0}
+
+/* Text helpers */
+.txt-gold{color:var(--gold)}.txt-em{color:var(--emerald)}.txt-cr{color:var(--crimson)}
+.txt-dim{color:var(--text-ghost);font-size:12px}
+.mono{font-family:'DM Mono',monospace}
+
+/* Responsive hint */
+@media(max-width:900px){
+  .stat-grid{grid-template-columns:repeat(2,1fr)}
+  .auth-left{display:none}.auth-right{width:100%}
+  #sidebar{width:60px;min-width:60px}
+  #sidebar .logo-words,.nav-label,.nav-badge,.sb-section-label,.user-name,.user-role,.signout-btn{opacity:0;width:0;overflow:hidden}
+}
+
+/* Cases page split layout */
+.cases-layout{
+  display:flex;gap:0;flex:1;overflow:hidden;
+}
+.cases-left{
+  width:380px;min-width:380px;
+  border-right:1px solid var(--border);
+  overflow-y:auto;padding:22px 18px;
+}
+.cases-right{
+  flex:1;padding:22px;overflow-y:auto;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════ AUTH SCREEN ═══════════════════════════ -->
+<div id="auth-screen">
+  <div class="auth-bg"></div>
+  <div class="auth-scanline"></div>
+  <div class="auth-glow"></div>
+
+  <!-- Left branding -->
+  <div class="auth-left">
+    <div class="fade-up">
+      <div class="auth-wordmark">Wakili<br><em>Wetu</em></div>
+      <p class="auth-sub">Kenya's AI-powered legal intelligence platform for advocates, policy makers, and every citizen. Backed by the Constitution, Kenya Law Reports, and every enacted statute.</p>
+    </div>
+    <div class="auth-features">
+      <div class="auth-feat fade-up-1">
+        <div class="auth-feat-icon">⚖️</div>
+        <div class="auth-feat-text">
+          <h4>Case Law Intelligence</h4>
+          <p>Instant semantic search across 48,000+ eKLR cases with AI-matched precedent analysis and similarity scoring.</p>
+        </div>
+      </div>
+      <div class="auth-feat fade-up-2">
+        <div class="auth-feat-icon">📜</div>
+        <div class="auth-feat-text">
+          <h4>Policy Impact Analysis</h4>
+          <p>Understand how every new law affects citizens, lawyers, and policy makers — positive and negative breakdowns.</p>
+        </div>
+      </div>
+      <div class="auth-feat fade-up-3">
+        <div class="auth-feat-icon">🔍</div>
+        <div class="auth-feat-text">
+          <h4>Constitutional Compass</h4>
+          <p>Cross-reference any legal issue against the 2010 Constitution, chapter and verse, with cited AI analysis.</p>
+        </div>
+      </div>
+      <div class="auth-feat fade-up-4">
+        <div class="auth-feat-icon">🤝</div>
+        <div class="auth-feat-text">
+          <h4>Plain Language for Citizens</h4>
+          <p>Complex legalese translated into clear Kiswahili or English so every Kenyan understands their rights.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right form -->
+  <div class="auth-right" id="auth-form-wrap">
+
+    <!-- LOGIN FORM -->
+    <div id="login-form">
+      <div class="auth-eyebrow">Wakili Wetu Platform</div>
+      <div class="auth-form-title">Sign in to your account</div>
+      <div class="auth-form-sub">Continue your legal research journey</div>
+
+      <div style="font-size:11px;color:var(--text-ghost);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">I am a</div>
+      <div class="role-grid">
+        <div class="role-pill active" data-role="lawyer" onclick="selectRole(this,'lawyer')">
+          <span class="ricon">⚖️</span>
+          <span class="rlabel">Advocate</span>
+        </div>
+        <div class="role-pill" data-role="citizen" onclick="selectRole(this,'citizen')">
+          <span class="ricon">👤</span>
+          <span class="rlabel">Citizen</span>
+        </div>
+        <div class="role-pill" data-role="policymaker" onclick="selectRole(this,'policymaker')">
+          <span class="ricon">🏛️</span>
+          <span class="rlabel">Policy Maker</span>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="fl">Email Address</label>
+        <input class="fi" type="email" id="login-email" placeholder="you@example.com" />
+      </div>
+      <div class="fg">
+        <label class="fl">Password</label>
+        <input class="fi" type="password" id="login-pw" placeholder="••••••••" />
+      </div>
+      <div style="text-align:right;margin-bottom:18px">
+        <a style="font-size:12px;color:var(--gold);cursor:pointer">Forgot password?</a>
+      </div>
+      <button class="btn-gold" onclick="doLogin()">Sign In →</button>
+      <div class="auth-switch">Don't have an account? <a onclick="showRegister()">Create one</a></div>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="register-form" style="display:none">
+      <div class="auth-eyebrow">Create Account</div>
+      <div class="auth-form-title">Join Wakili Wetu</div>
+      <div class="auth-form-sub">Kenya's legal intelligence platform</div>
+
+      <div class="steps" id="reg-steps">
+        <div class="step-it"><div class="step-dot active" id="sd1">1</div><div class="step-lbl active" id="sl1">Role</div></div>
+        <div class="step-it"><div class="step-dot pending" id="sd2">2</div><div class="step-lbl" id="sl2">Details</div></div>
+        <div class="step-it"><div class="step-dot pending" id="sd3">3</div><div class="step-lbl" id="sl3">Verify</div></div>
+      </div>
+
+      <!-- Step 1 -->
+      <div id="reg-s1">
+        <div style="font-size:12px;color:var(--text-ghost);margin-bottom:12px">Select your role for a tailored experience:</div>
+        <div class="role-grid" style="margin-bottom:14px">
+          <div class="role-pill active" data-role="lawyer" onclick="selectRegRole(this,'lawyer')">
+            <span class="ricon" style="font-size:26px">⚖️</span>
+            <span class="rlabel">Advocate</span>
+          </div>
+          <div class="role-pill" data-role="citizen" onclick="selectRegRole(this,'citizen')">
+            <span class="ricon" style="font-size:26px">👤</span>
+            <span class="rlabel">Citizen</span>
+          </div>
+          <div class="role-pill" data-role="policymaker" onclick="selectRegRole(this,'policymaker')">
+            <span class="ricon" style="font-size:26px">🏛️</span>
+            <span class="rlabel">Policy Maker</span>
+          </div>
+        </div>
+        <div id="role-desc" style="padding:12px;border-radius:var(--r6);border:1px solid var(--border);background:var(--surface);font-size:12px;color:var(--text-dim);line-height:1.65;margin-bottom:20px">
+          ⚖️ Advocates get full access to precedent search, case management, and AI-drafted briefs. Requires LSK bar number verification.
+        </div>
+        <button class="btn-gold" onclick="regNext(2)">Continue →</button>
+      </div>
+
+      <!-- Step 2 -->
+      <div id="reg-s2" style="display:none">
+        <div class="fg">
+          <label class="fl">Full Name</label>
+          <input class="fi" id="reg-name" placeholder="As on official ID" />
+        </div>
+        <div class="fg">
+          <label class="fl">Email Address</label>
+          <input class="fi" id="reg-email" type="email" placeholder="you@example.com" />
+        </div>
+        <div id="role-extra-fields"></div>
+        <div class="fg">
+          <label class="fl">Password</label>
+          <input class="fi" id="reg-pw" type="password" placeholder="At least 8 characters" />
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-outline" onclick="regNext(1)" style="flex:0 0 auto">← Back</button>
+          <button class="btn-gold" onclick="regNext(3)" style="flex:1">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div id="reg-s3" style="display:none">
+        <div style="text-align:center;padding:16px 0">
+          <div style="font-size:46px;margin-bottom:14px">📧</div>
+          <div style="font-size:15px;color:var(--bright);font-weight:600;margin-bottom:8px">Verify your email</div>
+          <div style="font-size:12.5px;color:var(--text-ghost);line-height:1.65;margin-bottom:22px">
+            We've sent a 6-digit code to <strong style="color:var(--text)" id="verify-email-show">your email</strong>.
+            <span id="verify-note"></span>
+          </div>
+          <div class="otp-row">
+            <input class="otp-cell" maxlength="1" oninput="otpNext(this,0)" />
+            <input class="otp-cell" maxlength="1" oninput="otpNext(this,1)" />
+            <input class="otp-cell" maxlength="1" oninput="otpNext(this,2)" />
+            <input class="otp-cell" maxlength="1" oninput="otpNext(this,3)" />
+            <input class="otp-cell" maxlength="1" oninput="otpNext(this,4)" />
+            <input class="otp-cell" maxlength="1" oninput="otpNext(this,5)" />
+          </div>
+        </div>
+        <button class="btn-gold" onclick="completeReg()">Complete Registration</button>
+        <div class="auth-switch"><a onclick="resendOtp()">Resend code</a></div>
+      </div>
+
+      <div class="auth-switch">Already have an account? <a onclick="showLogin()">Sign in</a></div>
+    </div>
+
+  </div><!-- /auth-form-wrap -->
+</div><!-- /auth-screen -->
+
+
+<!-- ═══════════════════════════ APP SHELL ═══════════════════════════ -->
+<div id="app-shell" class="hidden">
+
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <div class="sb-logo" onclick="toggleSidebar()">
+      <div class="logo-seal">⚖</div>
+      <div class="logo-words">
+        <div class="logo-title">Wakili Wetu</div>
+        <div class="logo-sub">Legal Intelligence</div>
+      </div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section-label">Navigation</div>
+      <div id="nav-items"></div>
+    </nav>
+    <div class="sb-footer">
+      <div class="user-chip" onclick="navigate('profile')">
+        <div class="user-av" id="sb-avatar" style="background:rgba(200,168,75,.14);color:var(--gold)">JM</div>
+        <div style="overflow:hidden;flex:1">
+          <div class="user-name" id="sb-name">—</div>
+          <div class="user-role" id="sb-role">—</div>
+        </div>
+      </div>
+      <div class="signout-btn" onclick="signOut()">← Sign out</div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div id="main">
+    <div class="topbar">
+      <div class="topbar-title" id="page-title">Dashboard</div>
+      <div class="topbar-right">
+        <div class="role-chip" id="topbar-role">⚖️ Advocate</div>
+        <div class="icon-btn" title="Notifications" onclick="showToast('No new notifications')">
+          🔔<div class="notif-dot"></div>
+        </div>
+        <div class="icon-btn" title="Help" onclick="showToast('Help & documentation coming soon')">?</div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD PAGE -->
+    <div id="page-dashboard" class="page">
+      <div class="pg" style="overflow-y:auto;flex:1">
+        <div class="section-head fade-up">
+          <div class="section-title" id="dash-greeting">Good morning</div>
+          <div class="section-sub" id="dash-date">—</div>
+        </div>
+        <div class="stat-grid" id="dash-stats"></div>
+        <div class="wn">
+          <div style="display:flex;flex-direction:column;gap:18px">
+            <div class="card fade-up-2">
+              <div class="card-head">
+                <div><div class="card-title" id="dash-card-title">Recent Cases</div><div class="card-sub">Last 7 days</div></div>
+                <button class="btn-outline" onclick="navigate('cases')" style="font-size:11.5px;padding:5px 12px">View All</button>
+              </div>
+              <div class="card-body" style="padding:10px 14px" id="dash-cases"></div>
+            </div>
+            <div class="card fade-up-3">
+              <div class="card-head"><div class="card-title">AI Agent Activity</div></div>
+              <div class="card-body" style="padding:10px 14px" id="dash-activity"></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div class="card fade-up-2">
+              <div class="card-head"><div class="card-title">Quick Ask AI</div></div>
+              <div class="card-body" id="dash-quickask"></div>
+            </div>
+            <div class="card fade-up-3">
+              <div class="card-head"><div class="card-title">Indexed Sources</div></div>
+              <div class="card-body" style="padding:12px 14px" id="dash-sources"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASES PAGE -->
+    <div id="page-cases" class="page" style="flex-direction:row">
+      <div class="cases-layout" style="flex:1;overflow:hidden">
+        <div class="cases-left" id="cases-list-panel">
+          <div class="flex-bet fade-up" style="margin-bottom:18px">
+            <div>
+              <div class="section-title" id="cases-page-title">Case Library</div>
+              <div class="section-sub" id="cases-page-sub">AI-indexed from public legal sources</div>
+            </div>
+            <button class="btn-gold" style="width:auto;padding:8px 16px;font-size:12px" onclick="showNewCaseForm()">+ New</button>
+          </div>
+          <div class="search-wrap fade-up-1">
+            <span>🔍</span>
+            <input class="search-input" placeholder="Search cases, parties, citations…" oninput="filterCases(this.value)" />
+          </div>
+          <div id="case-new-form" style="display:none; margin-bottom:16px; padding:12px; background:var(--raised); border:1px solid var(--border); border-radius:var(--r8);">
+            <h4>New Case</h4>
+            <div class="fg"><input class="fi" id="new-case-query" placeholder="Query text" /></div>
+            <div class="fg"><textarea class="fi" id="new-case-summary" rows="2" placeholder="Summary (optional)"></textarea></div>
+            <div class="fg"><textarea class="fi" id="new-case-citations" rows="2" placeholder="Citations (optional)"></textarea></div>
+            <button class="btn-gold" onclick="submitNewCase()">Save</button>
+            <button class="btn-outline" onclick="hideNewCaseForm()" style="margin-left:8px;">Cancel</button>
+          </div>
+          <div class="filters fade-up-1" id="case-filters"></div>
+          <div class="case-list fade-up-2" id="case-list-items"></div>
+        </div>
+        <div class="cases-right" id="case-detail-wrap">
+          <div class="detail-panel empty" id="case-detail">
+            <div class="detail-empty-ico">⚖️</div>
+            <div>Select a case to view details</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESEARCH PAGE -->
+    <div id="page-research" class="page">
+      <div class="research-pg">
+        <div class="ai-status">
+          <div class="ai-dot"></div>
+          <div class="ai-status-txt">AI Legal Agent — Online · Sources: eKLR, Constitution 2010, KLRC Statutes, Kenya Gazette 2024</div>
+        </div>
+        <div class="chat-area" id="chat-messages"></div>
+        <div class="chat-input-area">
+          <div class="suggest-pills" id="chat-suggests"></div>
+          <div class="chat-row">
+            <textarea class="chat-ta" id="chat-input" placeholder="Ask about cases, statutes, rights, or legal analysis…" rows="1"
+              onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}"></textarea>
+            <button class="send-btn" onclick="sendChat()">➤</button>
+            <button class="send-btn" onclick="document.getElementById('file-input').click()">📎</button>
+            <input type="file" id="file-input" style="display:none" onchange="uploadFile()" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE PAGE -->
+    <div id="page-profile" class="page">
+      <div class="pg" style="overflow-y:auto;flex:1;max-width:900px">
+        <div class="fade-up">
+          <div class="profile-banner">
+            <div class="p-av-lg" id="profile-av"></div>
+          </div>
+          <div class="profile-body">
+            <div class="flex-bet">
+              <div>
+                <div class="p-name" id="profile-name">—</div>
+                <div class="role-badge" id="profile-badge">—</div>
+              </div>
+              <button class="btn-outline" onclick="showToast('Edit profile coming soon')">Edit Profile</button>
+            </div>
+            <div class="p-divider"></div>
+            <div class="g3" id="profile-fields"></div>
+          </div>
+        </div>
+
+        <div class="profile-tabs fade-up-1">
+          <div class="ptab active" onclick="switchProfileTab('overview',this)">Overview</div>
+          <div class="ptab" onclick="switchProfileTab('activity',this)">Activity</div>
+          <div class="ptab" onclick="switchProfileTab('settings',this)">Settings</div>
+        </div>
+
+        <div id="ptab-overview" class="mt18 fade-up-2">
+          <div class="g2">
+            <div class="card">
+              <div class="card-head"><div class="card-title">Recent Activity</div></div>
+              <div class="card-body" style="padding:10px 14px" id="profile-activity"></div>
+            </div>
+            <div class="card">
+              <div class="card-head"><div class="card-title">Subscription</div></div>
+              <div class="card-body" id="profile-plan"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="ptab-activity" style="display:none" class="mt18 fade-up-2">
+          <div class="card">
+            <div class="card-head"><div class="card-title">Full Activity Log</div></div>
+            <div class="card-body" style="padding:10px 14px" id="profile-full-activity"></div>
+          </div>
+        </div>
+
+        <div id="ptab-settings" style="display:none" class="mt18 fade-up-2" style="max-width:500px">
+          <div class="card" style="max-width:520px">
+            <div class="card-head"><div class="card-title">Account Settings</div></div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:14px">
+              <div class="fg">
+                <label class="fl">Full Name</label>
+                <input class="fi" id="set-name" />
+              </div>
+              <div class="fg">
+                <label class="fl">Email</label>
+                <input class="fi" id="set-email" type="email" />
+              </div>
+              <div class="fg">
+                <label class="fl">Preferred Language</label>
+                <select class="fi">
+                  <option>English</option>
+                  <option>Kiswahili</option>
+                </select>
+              </div>
+              <div class="fg">
+                <label class="fl">AI Response Detail</label>
+                <select class="fi">
+                  <option>Detailed with Citations</option>
+                  <option>Summary Only</option>
+                  <option>Plain Language (Non-Lawyer)</option>
+                </select>
+              </div>
+              <button class="btn-gold" onclick="showToast('Settings saved successfully ✓')">Save Changes</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app-shell -->
+
+<div id="toast"></div>
+
+<!-- ═══════════════════════════ JAVASCRIPT ═══════════════════════════ -->
+<script>
+/* ══════════════════════════════════════
+   DATA
+══════════════════════════════════════ */
+const ROLES_CONFIG = {
+  lawyer: {
+    label:'Advocate', icon:'⚖️', color:'#c8a84b',
+    bg:'rgba(200,168,75,.14)', initials:'JM',
+    defaultName:'James Mwangi, Advocate', defaultEmail:'j.mwangi@lsk.or.ke'
+  },
+  citizen: {
+    label:'Citizen', icon:'👤', color:'#4b82c8',
+    bg:'rgba(75,130,200,.14)', initials:'WN',
+    defaultName:'Wanjiru Ngugi', defaultEmail:'wanjiru@gmail.com'
+  },
+  policymaker: {
+    label:'Policy Maker', icon:'🏛️', color:'#28a876',
+    bg:'rgba(40,168,118,.14)', initials:'AO',
+    defaultName:'Amina Odhiambo', defaultEmail:'a.odhiambo@housing.go.ke'
+  }
+};
+
+const NAV_CONFIG = {
+  lawyer: [
+    {id:'dashboard',label:'Dashboard',icon:'▦'},
+    {id:'cases',label:'My Cases',icon:'📁',badge:3},
+    {id:'research',label:'AI Research',icon:'🔍'},
+    {id:'profile',label:'Profile',icon:'👤'}
+  ],
+  citizen: [
+    {id:'dashboard',label:'Home',icon:'▦'},
+    {id:'cases',label:'My Issues',icon:'📁'},
+    {id:'research',label:'Ask AI',icon:'💬'},
+    {id:'profile',label:'Profile',icon:'👤'}
+  ],
+  policymaker: [
+    {id:'dashboard',label:'Dashboard',icon:'▦'},
+    {id:'cases',label:'Legislation',icon:'📜',badge:2},
+    {id:'research',label:'Policy Research',icon:'🔍'},
+    {id:'profile',label:'Profile',icon:'👤'}
+  ]
+};
+
+const CASES_DATA = [
+  {
+    id:'C-2024-001', title:'Okello v. Attorney General of Kenya',
+    parties:'John Okello v. The Hon. Attorney General',
+    court:'High Court of Kenya, Constitutional Division',
+    year:'2024', type:'constitutional', status:'open',
+    judge:'Hon. Justice M. Wanjiku',
+    summary:'Petition challenging the constitutionality of Article 12 of the Land Amendment Act 2023, alleging violation of Articles 40 and 60 of the Constitution of Kenya 2010 regarding compulsory acquisition of land without prompt compensation.',
+    aiInsight:'This case bears significant resemblance to Ndungu v. AG [2018] eKLR where the Court of Appeal established the two-stage proportionality test for land acquisition. Counsel may also rely on Article 40(3) requiring just compensation and the National Land Commission Act Section 18 on procedures.',
+    precedents:[
+      {title:'Ndungu & 3 Others v. Attorney General',cite:'[2018] eKLR',court:'Court of Appeal',sim:87,summary:'Established the two-stage proportionality test for compulsory land acquisition under Article 40.'},
+      {title:'Githinji v. Commissioner of Lands',cite:'[2015] eKLR',court:'High Court ELC',sim:74,summary:'Defined \'prompt compensation\' under the National Land Policy framework.'},
+      {title:'Mwangi v. National Land Commission',cite:'[2021] eKLR',court:'Environment & Land Court',sim:69,summary:'Clarified procedural role of NLC in compulsory acquisition processes.'}
+    ],
+    timeline:[
+      {date:'2024-02-10',event:'Petition filed at the High Court, Constitutional Division'},
+      {date:'2024-02-28',event:'Certificate of urgency granted by the duty judge'},
+      {date:'2024-03-14',event:'State respondent served and entered appearance'},
+      {date:'2024-04-05',event:'Replying affidavit filed by the Attorney General'}
+    ]
+  },
+  {
+    id:'C-2023-118', title:'Republic v. Kamau & 4 Others',
+    parties:'Republic v. David Kamau & 4 Others',
+    court:'High Court – Criminal Division, Nairobi',
+    year:'2023', type:'criminal', status:'pending',
+    judge:'Hon. Justice A. Oduya',
+    summary:'Prosecution of five accused persons for conspiracy to defraud the National Social Security Fund of Ksh 2.3 billion through fictitious procurement contracts over a period of three years (2019–2022).',
+    aiInsight:'Key statutory basis: Anti-Corruption and Economic Crimes Act Cap 65. The prosecution methodology mirrors the NYS Scandal prosecutions (Republic v. Echesa [2021]). Critical evidentiary issue: admissibility of electronic records under Evidence Act Section 106B.',
+    precedents:[
+      {title:'Republic v. Echesa & Others',cite:'[2021] eKLR',court:'Anti-Corruption Court',sim:91,summary:'Prosecution for procurement fraud using fictitious contracts — court admitted digital evidence.'},
+      {title:'Republic v. Henry Rotich',cite:'[2019] eKLR',court:'Anti-Corruption Court',sim:73,summary:'Established burden of proof standard for procurement fraud cases.'}
+    ],
+    timeline:[
+      {date:'2023-08-01',event:'Charges preferred — conspiracy to defraud public funds'},
+      {date:'2023-09-15',event:'All five accused plead not guilty'},
+      {date:'2023-11-20',event:'Hearing commenced — prosecution witnesses begin testimony'},
+      {date:'2024-01-18',event:'DCI forensic accountant testimony — Ksh 2.3B traced'}
+    ]
+  },
+  {
+    id:'POL-2024-003', title:'Finance Act 2024 — Housing Levy',
+    parties:'N/A — Legislation / Policy Document',
+    court:'Kenya Gazette Supplement No. 91',
+    year:'2024', type:'constitutional', status:'open',
+    judge:'N/A', isPolicy:true,
+    summary:'The Finance Act 2024 introduced a mandatory 1.5% Housing Levy deducted from gross salary of all employees, with equal employer contribution, directed to the Affordable Housing Fund under the State Department of Housing and Urban Development.',
+    aiInsight:'The Housing Levy was constitutionally challenged in Okiya Omtatah v. National Assembly [2023] eKLR. The Court of Appeal upheld the levy in principle but directed Parliament to introduce an opt-out mechanism. Similar schemes in Rwanda (2012) and Ghana (2015) increased affordable housing supply by 18% within 5 years. Article 210 requires express parliamentary authority for all levies.',
+    precedents:[
+      {title:'Okiya Omtatah v. National Assembly & Others',cite:'[2023] eKLR CA',court:'Court of Appeal',sim:95,summary:'Challenged constitutionality of Housing Levy — upheld with directive to amend opt-out provisions.'}
+    ],
+    timeline:[
+      {date:'2023-06-23',event:'Finance Bill 2023 published — Housing Levy first proposed'},
+      {date:'2023-07-05',event:'Gen Z protests — Bill withdrawn by President'},
+      {date:'2024-02-28',event:'Finance Bill 2024 re-tabled with revised Housing Levy provisions'},
+      {date:'2024-06-27',event:'Finance Act 2024 signed into law by President'}
+    ],
+    policyImpact:{
+      citizen:{
+        pos:['Access to affordable housing units via Boma Yangu platform','Priority allocation for first-time home buyers','Subsidised mortgage rates through KMRC','Improved housing stock in urban areas'],
+        neg:['Mandatory 1.5% deduction reduces monthly take-home pay','No opt-out for those who already own property','Uncertainty on redemption timeline for contributions','Regressive impact on low-income earners']
+      },
+      lawyer:{
+        pos:['New litigation area in housing levy disputes','Increased conveyancing work from new housing units','Constitutional challenge advisory work'],
+        neg:['Same mandatory deduction applies to legal practitioners','Added compliance burden for law firms as employers','LSK levy contributions non-refundable if practice closes']
+      },
+      policymaker:{
+        pos:['Direct sustainable funding stream for affordable housing','Reduces national debt dependency for housing projects','Demonstrates government commitment to Big 4 agenda'],
+        neg:['Political backlash from salaried middle class','Risk of fund mismanagement reducing public trust','Oversight mechanism insufficiently defined in the Act']
+      }
+    }
+  },
+  {
+    id:'C-2022-445', title:'Wanjiku v. Kenya Railways Corporation',
+    parties:'Mary Wanjiku v. Kenya Railways Corporation',
+    court:'High Court – Civil Division, Nairobi',
+    year:'2022', type:'civil', status:'closed',
+    judge:'Hon. Justice P. Otieno',
+    summary:'Claim for general damages for personal injuries sustained when plaintiff fell into an uncovered drainage channel on Kenya Railways Corporation property at Nairobi terminus.',
+    aiInsight:'Occupiers\' liability principles under the Occupiers\' Liability Act Cap 34 apply. The court in Kamau v. Nairobi City County [2019] eKLR established that public utilities owe a higher duty of care to invitees. Quantum of damages likely KES 1.5M–3M based on comparable injury cases.',
+    precedents:[
+      {title:'Kamau v. Nairobi City County',cite:'[2019] eKLR',court:'High Court',sim:82,summary:'Established enhanced duty of care for public utilities toward invitees.'}
+    ],
+    timeline:[
+      {date:'2022-05-10',event:'Plaint filed — claim for Ksh 5M general damages'},
+      {date:'2022-09-01',event:'Defence filed — contributory negligence pleaded'},
+      {date:'2023-03-15',event:'Hearing — medical witnesses testified'},
+      {date:'2023-11-28',event:'Judgment delivered — Ksh 2.2M awarded with costs'}
+    ]
+  }
+];
+
+const AI_MSGS = [
+  {text:'Based on the indexed legal corpus — including the Constitution of Kenya 2010, all Kenya Law Reports, and the current Kenya Gazette — I\'ve located several highly relevant precedents for your query.', cites:[]},
+  {text:'The most applicable case is Ndungu & 3 Others v. Attorney General [2018] eKLR where the Court of Appeal established a two-stage proportionality test for compulsory land acquisition under Article 40 of the Constitution. The first stage asks whether the public purpose is legitimate; the second whether the measure is proportionate and accompanied by prompt compensation.',
+   cites:[{ref:'Ndungu & 3 Others v. AG [2018] eKLR',court:'Court of Appeal, Kenya'},{ref:'Article 40(3), Constitution of Kenya 2010',court:'Constitutional Provision'}]},
+  {text:'The Finance Act 2024 Housing Levy engages Article 210(1) of the Constitution which prohibits taxation without express parliamentary authority. The Court of Appeal in Omtatah v. National Assembly [2023] eKLR held that while the levy is constitutional in principle, Parliament must enact a clear statutory opt-out mechanism for those who already own property.',
+   cites:[{ref:'Omtatah v. National Assembly [2023] eKLR CA',court:'Court of Appeal, Kenya'}]},
+  {text:'Under the Anti-Corruption and Economic Crimes Act Cap 65, conspiracy to defraud public funds carries a maximum sentence of 10 years imprisonment and a fine equivalent to three times the amount defrauded. The standard of proof remains beyond reasonable doubt even for economic crimes — see Republic v. Echesa [2021] eKLR.',
+   cites:[{ref:'Anti-Corruption and Economic Crimes Act, Cap 65',court:'Laws of Kenya'},{ref:'Republic v. Echesa [2021] eKLR',court:'Anti-Corruption Court'}]}
+];
+
+/* ══════════════════════════════════════
+   STATE
+══════════════════════════════════════ */
+let currentRole = 'lawyer';
+let regRole = 'lawyer';
+let regStep = 1;
+let currentUser = null;
+let currentPage = 'dashboard';
+let selectedCase = null;
+let caseFilter = 'all';
+let aiMsgIdx = 0;
+let sidebarCollapsed = false;
+let chatTyping = false;
+
+/* ══════════════════════════════════════
+   AUTH
+══════════════════════════════════════ */
+function selectRole(el, role) {
+  document.querySelectorAll('#login-form .role-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  currentRole = role;
+}
+
+function selectRegRole(el, role) {
+  document.querySelectorAll('#reg-s1 .role-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  regRole = role;
+  const descs = {
+    lawyer: '⚖️ Advocates get full access to precedent search, case management, and AI-drafted briefs. Requires LSK bar number verification.',
+    citizen: '👤 Citizens get plain-language legal explanations, policy impact summaries, and access to legal aid resources. Free basic tier available.',
+    policymaker: '🏛️ Policy makers get impact analysis tools, case law tracking, and legislation comparison. Government email required.'
+  };
+  document.getElementById('role-desc').textContent = descs[role];
+}
+
+function showRegister() {
+  document.getElementById('login-form').style.display = 'none';
+  document.getElementById('register-form').style.display = 'block';
+  regStep = 1;
+  showRegStep(1);
+}
+function showLogin() {
+  document.getElementById('register-form').style.display = 'none';
+  document.getElementById('login-form').style.display = 'block';
+}
+
+function regNext(step) {
+  regStep = step;
+  showRegStep(step);
+}
+
+function showRegStep(step) {
+  [1,2,3].forEach(n => {
+    document.getElementById('reg-s'+n).style.display = n===step ? 'block' : 'none';
+    const dot = document.getElementById('sd'+n);
+    const lbl = document.getElementById('sl'+n);
+    dot.className = 'step-dot ' + (step > n ? 'done' : step === n ? 'active' : 'pending');
+    dot.textContent = step > n ? '✓' : n;
+    lbl.className = 'step-lbl' + (step === n ? ' active' : '');
+  });
+
+  if (step === 2) {
+    // Render role-specific fields
+    const container = document.getElementById('role-extra-fields');
+    if (regRole === 'lawyer') {
+      container.innerHTML = `<div class="fg"><label class="fl">LSK Admission Number</label><input class="fi" id="reg-lsk" placeholder="LSK/YYYY/XXXX" /></div>`;
+    } else if (regRole === 'policymaker') {
+      container.innerHTML = `<div class="fg"><label class="fl">Ministry / Department</label>
+        <select class="fi" id="reg-ministry"><option>Select Ministry</option>
+        <option>Ministry of Justice</option><option>Ministry of Housing</option>
+        <option>Ministry of Finance</option><option>Parliament of Kenya</option></select></div>`;
+    } else {
+      container.innerHTML = `<div class="fg"><label class="fl">County of Residence</label>
+        <select class="fi" id="reg-county"><option>Select County</option>
+        <option>Nairobi</option><option>Mombasa</option><option>Kisumu</option>
+        <option>Nakuru</option><option>Kiambu</option><option>Machakos</option><option>Other</option></select></div>`;
+    }
+  }
+  if (step === 3) {
+    const email = document.getElementById('reg-email')?.value || 'your email';
+    document.getElementById('verify-email-show').textContent = email;
+    const notes = {lawyer:' Your LSK number will be verified within 24 hours.',policymaker:' Your government email will be verified against our registry.',citizen:''};
+    document.getElementById('verify-note').textContent = notes[regRole];
+  }
+}
+
+function otpNext(el, idx) {
+  const cells = document.querySelectorAll('.otp-cell');
+  if (el.value.length === 1 && idx < 5) cells[idx+1].focus();
+}
+
+function resendOtp() { showToast('Verification code resent to your email'); }
+
+function completeReg() {
+  const name = document.getElementById('reg-name')?.value || ROLES_CONFIG[regRole].defaultName;
+  const email = document.getElementById('reg-email')?.value || ROLES_CONFIG[regRole].defaultEmail;
+  const password = document.getElementById('reg-pw')?.value || '';
+  if (!email || !password) { showToast('Email and password required'); return; }
+
+  // Submit to backend register endpoint
+  fetch('/api/auth/register', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({name, email, password, role: regRole})
+  }).then(r=>r.json())
+    .then(j=>{
+      if (j.error) {
+        showToast(j.error || 'Registration failed');
+      } else if (j.user) {
+        launchApp(j.user);
+      } else {
+        showToast('Registration succeeded');
+        launchApp({name, email, role: regRole});
+      }
+    }).catch(e=>{console.error(e);showToast('Registration failed');});
+}
+
+function doLogin() {
+  const email = document.getElementById('login-email')?.value || ROLES_CONFIG[currentRole].defaultEmail;
+  const password = document.getElementById('login-pw')?.value || '';
+  if (!email || !password) {
+    showToast('Please enter email and password');
+    return;
+  }
+  fetch('/api/auth/login', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({email, password})
+  }).then(r => r.json())
+    .then(j => {
+      if (j.error) {
+        showToast(j.error);
+      } else if (j.user) {
+        launchApp(j.user);
+      } else {
+        showToast('Login failed');
+      }
+    }).catch(err => {
+      console.error(err);
+      showToast('Login failed');
+    });
+}
+
+function launchApp(user) {
+  currentUser = user;
+  // persist session for later visits
+  try { localStorage.setItem('wakili_user', JSON.stringify(user)); } catch (e) {}
+  document.getElementById('auth-screen').classList.add('hidden');
+  document.getElementById('app-shell').classList.remove('hidden');
+  setupApp();
+  navigate('dashboard');
+  showToast('Welcome back, ' + user.name.split(',')[0].split(' ')[0] + ' ✓');
+}
+
+function signOut() {
+  currentUser = null;
+  try { localStorage.removeItem('wakili_user'); } catch (e) {}
+  document.getElementById('app-shell').classList.add('hidden');
+  document.getElementById('auth-screen').classList.remove('hidden');
+  document.getElementById('login-form').style.display = 'block';
+  document.getElementById('register-form').style.display = 'none';
+}
+
+// Try to restore session from localStorage on page load
+function tryRestoreSession() {
+  try {
+    const s = localStorage.getItem('wakili_user');
+    if (s) {
+      const u = JSON.parse(s);
+      if (u && u.email) {
+        // Optionally verify session server-side in future
+        launchApp(u);
+        return true;
+      }
+    }
+  } catch (e) {}
+  return false;
+}
+
+/* ══════════════════════════════════════
+   APP SETUP
+══════════════════════════════════════ */
+function setupApp() {
+  const role = currentUser.role;
+  const rc = ROLES_CONFIG[role];
+
+  // Sidebar
+  document.getElementById('sb-name').textContent = currentUser.name.split(',')[0];
+  document.getElementById('sb-role').textContent = rc.label;
+  const av = document.getElementById('sb-avatar');
+  av.textContent = rc.initials;
+  av.style.background = rc.bg;
+  av.style.color = rc.color;
+
+  document.getElementById('topbar-role').textContent = rc.icon + ' ' + rc.label;
+
+  // Nav items
+  const navCont = document.getElementById('nav-items');
+  navCont.innerHTML = '';
+  NAV_CONFIG[role].forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'nav-item';
+    div.dataset.page = item.id;
+    div.innerHTML = `<span class="nav-icon">${item.icon}</span><span class="nav-label">${item.label}</span>${item.badge ? `<span class="nav-badge">${item.badge}</span>` : ''}`;
+    div.onclick = () => navigate(item.id);
+    navCont.appendChild(div);
+  });
+
+  setupDashboard();
+  setupCases();
+  setupResearch();
+  setupProfile();
+}
+
+/* ══════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════ */
+function navigate(page) {
+  currentPage = page;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  const pg = document.getElementById('page-' + page);
+  if (pg) pg.classList.add('active');
+
+  const navEl = document.querySelector(`[data-page="${page}"]`);
+  if (navEl) navEl.classList.add('active');
+
+  const titles = {dashboard:'Dashboard',cases:currentUser?.role==='policymaker'?'Legislation':currentUser?.role==='citizen'?'My Issues':'Case Library',research:currentUser?.role==='citizen'?'Ask AI':'AI Research',profile:'Profile'};
+  document.getElementById('page-title').textContent = titles[page] || page;
+}
+
+function toggleSidebar() {
+  sidebarCollapsed = !sidebarCollapsed;
+  document.getElementById('sidebar').classList.toggle('collapsed', sidebarCollapsed);
+}
+
+/* ══════════════════════════════════════
+   DASHBOARD
+══════════════════════════════════════ */
+function setupDashboard() {
+  const role = currentUser.role;
+  const rc = ROLES_CONFIG[role];
+  const name = currentUser.name.split(',')[0].split(' ')[0];
+
+  document.getElementById('dash-greeting').innerHTML = `Good morning, <span style="color:var(--gold)">${name}</span>`;
+  document.getElementById('dash-date').textContent = new Date().toLocaleDateString('en-KE',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) + ' · ' + rc.label + ' Account';
+
+  // Stats
+  const stats = {
+    lawyer:[{ic:'📁',num:12,lbl:'Active Cases',ch:'↑ 2 this month',type:'up',col:'c-gold'},{ic:'🔍',num:48,lbl:'Precedents Found',ch:'AI-matched',type:'neu',col:'c-emerald'},{ic:'📄',num:89,lbl:'Documents',ch:'↑ 7 new',type:'up',col:'c-sapphire'},{ic:'⏰',num:3,lbl:'Deadlines This Week',ch:'Urgent',type:'dn',col:'c-crimson'}],
+    citizen:[{ic:'📁',num:2,lbl:'My Issues',ch:'Active',type:'neu',col:'c-gold'},{ic:'💬',num:7,lbl:'AI Queries',ch:'This week',type:'neu',col:'c-emerald'},{ic:'📜',num:5,lbl:'Policies Tracked',ch:'Updated',type:'neu',col:'c-sapphire'},{ic:'📅',num:1,lbl:'Upcoming Hearing',ch:'Next week',type:'dn',col:'c-crimson'}],
+    policymaker:[{ic:'📜',num:8,lbl:'Active Bills',ch:'↑ 2 this session',type:'up',col:'c-gold'},{ic:'⚖️',num:124,lbl:'Relevant Cases',ch:'AI-indexed',type:'neu',col:'c-emerald'},{ic:'📊',num:3,lbl:'Impact Reports',ch:'Ready',type:'up',col:'c-sapphire'},{ic:'🗓️',num:2,lbl:'Readings Due',ch:'This week',type:'dn',col:'c-crimson'}]
+  };
+  document.getElementById('dash-stats').innerHTML = (stats[role]||stats.lawyer).map((s,i)=>`
+    <div class="stat-card ${s.col} fade-up-${i+1}" style="animation-delay:${i*0.07}s">
+      <span class="stat-ic">${s.ic}</span>
+      <div class="stat-num">${s.num}</div>
+      <div class="stat-lbl">${s.lbl}</div>
+      <div class="stat-ch ${s.type}">${s.ch}</div>
+    </div>`).join('');
+
+  // Recent cases mini
+  document.getElementById('dash-cases').innerHTML = CASES_DATA.slice(0,2).map(c=>`
+    <div class="case-item" onclick="navigate('cases')" style="margin-bottom:8px;cursor:pointer">
+      <div class="flex-bet" style="margin-bottom:5px">
+        <span class="case-num">${c.id}</span>
+        <span class="tag tag-${c.status==='open'?'open':c.status==='pending'?'pend':'closed'}">${c.status}</span>
+      </div>
+      <div class="case-title-t">${c.title}</div>
+      <div class="case-meta">${c.isPolicy?'Policy Document':c.court} · ${c.year}</div>
+      <div class="case-tags"><span class="tag tag-${c.type}">${c.type}</span></div>
+    </div>`).join('');
+
+  // Activity
+  const acts = role==='citizen'
+    ? ['AI explained the Housing Levy Act in plain language','Found 2 legal aid providers near Nairobi','Summarised your rights under Article 49 on arrest','Tracked Finance Act 2024 amendments']
+    : role==='policymaker'
+    ? ['Indexed Kenya Gazette Supplement No. 91 (2024)','Impact analysis generated for Housing Levy','Flagged constitutional conflict in Bill No. 14, 2024','Compared Housing Levy with Rwanda 2012 model']
+    : ['Indexed 3 new Kenya Gazette supplements','Found 12 precedents matching Okello v. AG','Summarised Finance Act 2024 — 24 amendments','Flagged constitutional issue in Land Amendment Act'];
+  document.getElementById('dash-activity').innerHTML = acts.map((a,i)=>`
+    <div class="activity-row" style="animation-delay:${i*0.06}s">
+      <div class="act-dot"></div>
+      <div class="act-txt">${a}</div>
+    </div>`).join('');
+
+  // Quick ask
+  const qs = role==='citizen'
+    ? ['What are my rights if arrested?','How do I challenge an eviction?','Explain the Housing Levy to me']
+    : role==='policymaker'
+    ? ['Which cases challenge the Finance Act 2024?','Precedents on compulsory acquisition','Impact of Housing Levy on low-income earners']
+    : ['Find precedents for land acquisition cases','Summarise the Anti-Corruption Act Cap 65','Cases involving procurement fraud — eKLR'];
+  document.getElementById('dash-quickask').innerHTML = qs.map(q=>`
+    <div class="quick-q" onclick="navigate('research');setTimeout(()=>{document.getElementById('chat-input').value='${q}'},200)">
+      <span>💬</span><span>${q}</span>
+    </div>`).join('');
+
+  // Sources
+  document.getElementById('dash-sources').innerHTML = [
+    {name:'Constitution of Kenya 2010',cnt:'246 Articles + 6 Schedules',ok:true},
+    {name:'Kenya Law Reports (eKLR)',cnt:'48,000+ cases indexed',ok:true},
+    {name:'KLRC Statute Database',cnt:'580+ Acts of Parliament',ok:true},
+    {name:'Kenya Gazette Supplements',cnt:'2024 editions — current',ok:true}
+  ].map(s=>`
+    <div class="source-row">
+      <div><div class="src-name">${s.name}</div><div class="src-cnt">${s.cnt}</div></div>
+      <span class="src-ok">✓</span>
+    </div>`).join('');
+
+  document.getElementById('dash-card-title').textContent = role==='policymaker'?'Legislation Tracker':role==='citizen'?'My Issues':'Recent Cases';
+}
+
+/* ══════════════════════════════════════
+   CASES
+══════════════════════════════════════ */
+function setupCases() {
+  const role = currentUser.role;
+  document.getElementById('cases-page-title').textContent = role==='policymaker'?'Legislation':role==='citizen'?'My Issues':'Case Library';
+  document.getElementById('cases-page-sub').textContent = 'AI-indexed from public legal sources';
+
+  // Filters
+  document.getElementById('case-filters').innerHTML = ['all','constitutional','criminal','civil','policy'].map(f=>`
+    <button class="fchip ${f==='all'?'active':''}" onclick="setCaseFilter('${f}',this)">${f.charAt(0).toUpperCase()+f.slice(1)}</button>
+  `).join('');
+
+  renderCases('');
+}
+
+function setCaseFilter(f, el) {
+  caseFilter = f;
+  document.querySelectorAll('.fchip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderCases(document.querySelector('.search-input')?.value||'');
+}
+
+function filterCases(q) { renderCases(q); }
+
+function renderCases(q) {
+  const items = CASES_DATA.filter(c => {
+    const matchQ = !q || c.title.toLowerCase().includes(q.toLowerCase()) || c.id.toLowerCase().includes(q.toLowerCase());
+    const matchF = caseFilter==='all' || c.type===caseFilter || (caseFilter==='policy'&&c.isPolicy);
+    return matchQ && matchF;
+  });
+  document.getElementById('case-list-items').innerHTML = items.length
+    ? items.map(c=>`
+      <div class="case-item ${selectedCase?.id===c.id?'sel':''}" onclick="selectCase('${c.id}')">
+        <div class="flex-bet" style="margin-bottom:5px">
+          <span class="case-num">${c.id}</span>
+          <span class="tag tag-${c.status==='open'?'open':c.status==='pending'?'pend':'closed'}">${c.status}</span>
+        </div>
+        <div class="case-title-t">${c.title}</div>
+        <div class="case-meta">${c.isPolicy?'Policy Document':c.court} · ${c.year}</div>
+        <div class="case-tags">
+          <span class="tag tag-${c.type}">${c.type}</span>
+          ${c.isPolicy?'<span class="tag tag-pol">policy</span>':''}
+        </div>
+      </div>`).join('')
+    : `<div style="text-align:center;padding:40px;color:var(--text-ghost);font-size:13px"><div style="font-size:32px;margin-bottom:10px">🔍</div>No cases match your search</div>`;
+}
+
+function selectCase(id) {
+  selectedCase = CASES_DATA.find(c=>c.id===id);
+  renderCases(document.querySelector('.search-input')?.value||'');
+  renderCaseDetail(selectedCase);
+}
+
+function renderCaseDetail(c) {
+  const wrap = document.getElementById('case-detail-wrap');
+  const role = currentUser.role;
+
+  const tabs = ['Summary','Precedents','Timeline'];
+  if (c.isPolicy) tabs.push('Impact');
+
+  wrap.innerHTML = `
+    <div class="detail-panel" id="case-detail">
+      <div class="detail-hero">
+        <div class="detail-id">${c.id} ${c.isPolicy?'• POLICY':'• CASE'}</div>
+        <div class="detail-title-h">${c.title}</div>
+        <div class="detail-meta">
+          ${!c.isPolicy?`<span class="dmeta"><strong>Court:</strong> ${c.court}</span>
+          <span class="dmeta"><strong>Year:</strong> ${c.year}</span>
+          <span class="dmeta"><strong>Judge:</strong> ${c.judge}</span>`:''}
+          <span class="tag tag-${c.type}">${c.type}</span>
+          <span class="tag tag-${c.status==='open'?'open':c.status==='pending'?'pend':'closed'}">${c.status}</span>
+        </div>
+      </div>
+      <div class="dtabs">
+        ${tabs.map((t,i)=>`<div class="dtab ${i===0?'active':''}" onclick="switchDTab(this,'${t.toLowerCase()}')">${t}</div>`).join('')}
+      </div>
+      <div class="dcontent" id="dtab-content"></div>
+    </div>`;
+
+  renderDTab(c, 'summary');
+}
+
+function switchDTab(el, tab) {
+  document.querySelectorAll('.dtab').forEach(d=>d.classList.remove('active'));
+  el.classList.add('active');
+  renderDTab(selectedCase, tab);
+}
+
+function renderDTab(c, tab) {
+  const content = document.getElementById('dtab-content');
+  const role = currentUser.role;
+
+  if (tab === 'summary') {
+    content.innerHTML = `
+      <div class="ai-box">
+        <div class="ai-box-hd">AI Legal Insight</div>
+        <div class="ai-box-txt">${c.aiInsight}</div>
+      </div>
+      <div style="font-size:13.5px;line-height:1.8;color:var(--text)">${c.summary}</div>
+      ${!c.isPolicy?`<div class="divider"></div>
+      <div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-ghost);margin-bottom:5px;font-weight:600">Parties</div>
+      <div style="font-size:13px;color:var(--text)">${c.parties}</div>`:''}`;
+  }
+  else if (tab === 'precedents') {
+    content.innerHTML = `
+      <div style="font-size:12px;color:var(--text-ghost);margin-bottom:14px">Similar cases identified from eKLR, Kenya Law Reports & Constitutional Court archives.</div>
+      ${c.precedents.map(p=>`
+        <div class="prec-item">
+          <div class="prec-title">${p.title}</div>
+          <div class="prec-cite">${p.cite} — ${p.court}</div>
+          <div class="prec-sum">${p.summary}</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:9px">
+            <div style="font-size:10px;color:var(--text-ghost)">Similarity</div>
+            <div style="flex:1"><div class="sim-bar"><div class="sim-fill" style="width:${p.sim}%"></div></div></div>
+            <div style="font-size:11px;color:var(--gold);font-family:'DM Mono',monospace">${p.sim}%</div>
+          </div>
+        </div>`).join('')}`;
+  }
+  else if (tab === 'timeline') {
+    content.innerHTML = `<div class="timeline">${c.timeline.map(t=>`
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">${t.date}</div>
+        <div class="tl-ev">${t.event}</div>
+      </div>`).join('')}</div>`;
+  }
+  else if (tab === 'impact' && c.isPolicy) {
+    const data = c.policyImpact[role] || c.policyImpact.citizen;
+    const rc = ROLES_CONFIG[role];
+    content.innerHTML = `
+      <div class="ai-box" style="margin-bottom:18px">
+        <div class="ai-box-hd">Policy Impact for ${rc.label}s</div>
+        <div class="ai-box-txt">AI-generated analysis of how this policy affects you specifically based on your role and profile.</div>
+      </div>
+      <div class="impact-grid">
+        <div class="impact-card pos">
+          <div class="impact-lbl">✅ Positive Impact</div>
+          ${data.pos.map(p=>`<div class="impact-it"><span style="color:var(--emerald);flex-shrink:0">+</span><span>${p}</span></div>`).join('')}
+        </div>
+        <div class="impact-card neg">
+          <div class="impact-lbl">⚠️ Negative Impact</div>
+          ${data.neg.map(p=>`<div class="impact-it"><span style="color:var(--crimson);flex-shrink:0">−</span><span>${p}</span></div>`).join('')}
+        </div>
+      </div>
+      <div style="margin-top:18px">
+        <div style="font-size:11px;font-weight:700;color:var(--text-mid);text-transform:uppercase;letter-spacing:.09em;margin-bottom:12px">All Stakeholders</div>
+        ${Object.entries(c.policyImpact).map(([key,val])=>`
+          <div style="margin-bottom:10px;padding:11px 14px;border:1px solid var(--border);border-radius:var(--r6);background:var(--surface)">
+            <div style="font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:7px;text-transform:capitalize">${key==='policymaker'?'Policy Makers':key+'s'}</div>
+            <div style="display:flex;gap:20px">
+              <div style="font-size:11.5px;color:var(--emerald)">${val.pos.length} positive</div>
+              <div style="font-size:11.5px;color:var(--crimson)">${val.neg.length} concerns</div>
+            </div>
+          </div>`).join('')}
+      </div>`;
+  }
+}
+
+/* ══════════════════════════════════════
+   RESEARCH / AI CHAT
+══════════════════════════════════════ */
+function setupResearch() {
+  const role = currentUser.role;
+  const suggests = {
+    lawyer:['Find land acquisition precedents','Summarise Anti-Corruption Act Cap 65','Cases on procurement fraud'],
+    citizen:['What are my rights if arrested?','Explain the Housing Levy simply','How do I file a court petition?'],
+    policymaker:['Cases challenging Finance Act 2024','Impact of Housing Levy on workers','Precedents on compulsory acquisition']
+  };
+
+  document.getElementById('chat-suggests').innerHTML = (suggests[role]||suggests.lawyer).map(s=>
+    `<button class="spill" onclick="fillChat('${s}')">${s}</button>`).join('');
+
+  // Initial AI message
+  document.getElementById('chat-messages').innerHTML = '';
+  appendAiMsg({
+    text:'Welcome to Wakili Wetu AI Research. I have full access to the Constitution of Kenya 2010, Kenya Law Reports (48,000+ cases), all enacted statutes via the KLRC database, and current Kenya Gazette supplements. Ask me anything — I will always cite my sources.',
+    cites:[]
+  });
+}
+
+function fillChat(txt) {
+  document.getElementById('chat-input').value = txt;
+  document.getElementById('chat-input').focus();
+}
+
+function appendAiMsg(msg) {
+  const area = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg';
+  div.style.animation = 'fadeUp .4s both';
+  div.innerHTML = `
+    <div class="msg-av ai-av">⚖</div>
+    <div style="flex:1">
+      <div class="bubble ai-b">${msg.text}</div>
+      ${msg.cites.map(c=>`
+        <div class="cite-card">
+          <div class="cite-ref">📎 ${c.ref}</div>
+          <div class="cite-court">${c.court}</div>
+        </div>`).join('')}
+    </div>`;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+function appendUserMsg(txt) {
+  const area = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg usr';
+  div.style.animation = 'fadeUp .3s both';
+  div.innerHTML = `
+    <div class="msg-av usr-av">You</div>
+    <div class="bubble usr-b">${txt}</div>`;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+function appendTyping() {
+  const area = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg';
+  div.id = 'typing-indicator';
+  div.innerHTML = `
+    <div class="msg-av ai-av">⚖</div>
+    <div class="bubble ai-b"><div class="typing"><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div></div></div>`;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+function removeTyping() {
+  const el = document.getElementById('typing-indicator');
+  if (el) el.remove();
+}
+
+function sendChat() {
+  if (chatTyping) return;
+  const input = document.getElementById('chat-input');
+  const txt = input.value.trim();
+  if (!txt) return;
+  input.value = '';
+  appendUserMsg(txt);
+  chatTyping = true;
+  appendTyping();
+
+  fetch('/api/ai/analyze', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({text: txt})
+  }).then(r => r.json())
+    .then(j => {
+      removeTyping();
+      chatTyping = false;
+      // support new structured response: {text, cites}
+      const text = (j && (j.text || j.summary)) || '[No response]';
+      const cites = (j && (j.cites || j.citations)) || [];
+      appendAiMsg({text, cites});
+    }).catch(err => {
+      console.error(err);
+      removeTyping();
+      chatTyping = false;
+      appendAiMsg({text:'[AI error]', cites: []});
+    });
+}
+
+/* ══════════════════════════════════════
+   PROFILE
+══════════════════════════════════════ */
+function uploadFile() {
+  const fileInput = document.getElementById('file-input');
+  if (!fileInput.files.length) return;
+  const file = fileInput.files[0];
+  const form = new FormData();
+  form.append('file', file);
+  // show user upload in chat and show typing
+  appendUserMsg('Uploaded file: ' + file.name);
+  appendTyping();
+
+  fetch('/api/ai/upload', {
+    method: 'POST',
+    body: form
+  }).then(r=>r.json())
+    .then(j=>{
+       removeTyping();
+       const filename = j.filename || file.name;
+       const docId = j.doc_id || null;
+       const text = (j && (j.text || j.summary)) || '[No summary]';
+       const cites = (j && (j.cites || j.citations)) || [];
+       // prepend filename to display
+       appendAiMsg({text: 'File: ' + filename + '\n' + text, cites});
+       try { localStorage.setItem('wakili_last_doc', JSON.stringify({id:docId, filename})); } catch(e) {}
+    }).catch(e=>{
+       console.error(e);
+       removeTyping();
+       appendAiMsg({text:'[Upload failed]', cites: []});
+    });
+}
+
+function showNewCaseForm() {
+  document.getElementById('case-new-form').style.display = '';
+}
+function hideNewCaseForm() {
+  document.getElementById('case-new-form').style.display = 'none';
+}
+function submitNewCase() {
+  const q = document.getElementById('new-case-query').value.trim();
+  if (!q) { showToast('Query required'); return; }
+  const sum = document.getElementById('new-case-summary').value;
+  const cit = document.getElementById('new-case-citations').value;
+  fetch('/api/cases/', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({query:q, summary:sum, citations:cit})
+  }).then(r=>r.json())
+    .then(j=>{
+       showToast('Case created id '+j.id);
+       hideNewCaseForm();
+       // optionally refresh list
+    }).catch(e=>{console.error(e);showToast('Case creation failed');});
+}
+
+function setupProfile() {
+  const role = currentUser.role;
+  const rc = ROLES_CONFIG[role];
+  const name = currentUser.name.split(',')[0];
+
+  const avEl = document.getElementById('profile-av');
+  avEl.textContent = rc.initials;
+  avEl.style.background = rc.bg;
+  avEl.style.color = rc.color;
+
+  document.getElementById('profile-name').textContent = name;
+  const badge = document.getElementById('profile-badge');
+  badge.textContent = rc.icon + ' ' + rc.label;
+  badge.style.background = rc.bg;
+  badge.style.color = rc.color;
+
+  const fields = {
+    lawyer:[{l:'Bar Number',v:'LSK/2019/7821'},{l:'Admitted',v:'March 2019'},{l:'Specialisation',v:'Constitutional & Land Law'}],
+    citizen:[{l:'National ID',v:'••••••7821'},{l:'County',v:'Nairobi'},{l:'Member Since',v:'January 2024'}],
+    policymaker:[{l:'Ministry',v:'Housing & Urban Dev.'},{l:'Designation',v:'Senior Policy Analyst'},{l:'Clearance',v:'Level 3 — Verified'}]
+  };
+  document.getElementById('profile-fields').innerHTML = (fields[role]||fields.lawyer).map(f=>`
+    <div><div class="p-field-lbl">${f.l}</div><div class="p-field-val">${f.v}</div></div>`).join('');
+
+  // Activity
+  const acts = ['Researched Housing Levy precedents','Uploaded Finance Act 2024 PDF','AI summarised Okello v. AG [2024]','Cited Ndungu v. AG in court brief','Opened new case: C-2024-001'];
+  const actHtml = acts.map(a=>`<div class="activity-row"><div class="act-dot"></div><div class="act-txt">${a}</div></div>`).join('');
+  document.getElementById('profile-activity').innerHTML = actHtml;
+  document.getElementById('profile-full-activity').innerHTML = [...acts,...acts].map((a,i)=>`<div class="activity-row"><div class="act-dot"></div><div class="act-txt">${a}</div></div>`).join('');
+
+  // Plan
+  document.getElementById('profile-plan').innerHTML = `
+    <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--gold);margin-bottom:4px">Professional</div>
+    <div style="font-size:11.5px;color:var(--text-ghost);margin-bottom:16px">Renews Jan 2025 · KES 2,500/month</div>
+    ${['Unlimited AI queries','Full eKLR access','Document uploads (5 GB)','Case citations & PDF export','Priority support'].map(f=>`<div class="plan-feat">${f}</div>`).join('')}
+    <button class="btn-outline" style="margin-top:14px;width:100%;font-size:12.5px" onclick="showToast('Upgrade plans coming soon')">Upgrade Plan</button>`;
+
+  document.getElementById('set-name').value = name;
+  document.getElementById('set-email').value = currentUser.email;
+}
+
+function switchProfileTab(tab, el) {
+  document.querySelectorAll('.ptab').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('ptab-overview').style.display = tab==='overview'?'block':'none';
+  document.getElementById('ptab-activity').style.display = tab==='activity'?'block':'none';
+  document.getElementById('ptab-settings').style.display = tab==='settings'?'block':'none';
+}
+
+/* ══════════════════════════════════════
+   TOAST
+══════════════════════════════════════ */
+let toastTimeout;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+/* ══════════════════════════════════════
+   INIT
+══════════════════════════════════════ */
+// Try restore session or pre-select lawyer role on load
+if (!tryRestoreSession()) {
+  selectRole(document.querySelector('.role-pill[data-role="lawyer"]'), 'lawyer');
+}
+
+
+async function analyzeCase() {
+
+    const query = document.getElementById("legalQuery").value;
+
+    if (!query) {
+        alert("Please enter a legal issue.");
+        return;
+    }
+
+    try {
+        const response = await fetch("http://127.0.0.1:5000/api/cases/analyze", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ query: query })
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+            document.getElementById("result").innerText = data.error;
+        } else {
+            document.getElementById("result").innerText = data.analysis;
+        }
+
+    } catch (err) {
+        console.error(err);
+        document.getElementById("result").innerText = "Error connecting to backend.";
+    }
+}
+
+
+</script>
+</body>
+</html>
